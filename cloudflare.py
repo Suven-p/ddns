@@ -27,10 +27,7 @@ def get_record(zone_id, record_name):
         body = response.read().decode("utf-8")
     response = json.loads(body)
     if response["success"]:
-        return (
-            response["result"][0]["id"],
-            response["result"][0]["content"],
-        )
+        return response["result"][0]["id"]
 
 
 def update_dns_record(zone_id, record_id, record_content):
@@ -70,13 +67,16 @@ def create_dns_record(zone_id, record_name, record_content):
 
 if __name__ == "__main__":
     record_id = config.get("record_id", None)
-    old_ip = None
-    if record_id is None:
-        record_id, old_ip = get_record(zone_id, host_name)
+    stored_ip = config.get("IP", None)
     current_ip = get_current_ip()
-
-    if current_ip == old_ip:
+    if stored_ip == current_ip:
         print("IP address is same. No need to update.")
         exit(0)
 
-    update_dns_record(zone_id, record_id, current_ip)
+    if record_id is None:
+        record_id = get_record(zone_id, host_name)
+
+    new_ip = update_dns_record(zone_id, record_id, current_ip)
+    config["IP"] = new_ip
+    with open("config.json", "w") as f:
+        json.dump(config, f)
