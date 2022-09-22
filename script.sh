@@ -1,2 +1,2 @@
 git pull;
-python cloudflare.py;
+python3 cloudflare.py;
