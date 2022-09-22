@@ -1,4 +1,4 @@
-from urllib import request
+from datetime import datetime
 from urllib.request import urlopen, Request
 import json
 
@@ -44,7 +44,7 @@ def update_dns_record(zone_id, record_id, record_content):
     response = json.loads(body)
     new_ip = response["result"]["content"]
     if response["success"]:
-        print(f"DNS Record updated to {new_ip}.")
+        print(f"DNS Record updated to {new_ip} at {datetime.now()}.")
     return new_ip
 
 
