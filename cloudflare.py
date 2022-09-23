@@ -3,7 +3,7 @@ import json
 from urllib.request import urlopen, Request
 import socket
 
-forced = True
+forced = False
 with open("config.json") as f:
     config = json.load(f)
 host_name = socket.gethostname()
