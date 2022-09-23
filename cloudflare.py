@@ -1,11 +1,12 @@
 from datetime import datetime
-from urllib.request import urlopen, Request
 import json
+from urllib.request import urlopen, Request
+import socket
 
 
 with open("config.json") as f:
     config = json.load(f)
-host_name = config["host_name"]
+host_name = socket.gethostname()
 zone_id = config["zone_id"]
 base_url = "https://api.cloudflare.com/client/v4"
 headers = {
@@ -70,7 +71,7 @@ if __name__ == "__main__":
     stored_ip = config.get("IP", None)
     current_ip = get_current_ip()
     if stored_ip == current_ip:
-        print("IP address is same. No need to update.")
+        print(f"IP address is same at {datetime.now()}. No need to update")
         exit(0)
 
     if record_id is None:
