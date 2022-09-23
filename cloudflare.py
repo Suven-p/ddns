@@ -3,7 +3,7 @@ import json
 from urllib.request import urlopen, Request
 import socket
 
-
+forced = True
 with open("config.json") as f:
     config = json.load(f)
 host_name = socket.gethostname()
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     record_id = config.get("record_id", None)
     stored_ip = config.get("IP", None)
     current_ip = get_current_ip()
-    if stored_ip == current_ip:
+    if stored_ip == current_ip and not forced:
         print(f"IP address is same at {datetime.now()}. No need to update")
         exit(0)
 
